@@ -1,7 +1,7 @@
 package org.eteriaEngine.rendering.postProcessing;
 import org.eteriaEngine.rendering.RTHandle;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.command.CommandBuffer;
+import org.eteriaEngine.rendering.commands.CommandBuffer;
 
 public abstract class PostProcessingEffect {
     protected boolean isActive;

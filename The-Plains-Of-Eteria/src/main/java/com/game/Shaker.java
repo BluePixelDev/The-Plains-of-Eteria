@@ -1,4 +1,4 @@
-package com.game.components;
+package com.game;
 import org.eteriaEngine.core.Time;
 import org.eteriaEngine.components.Component;
 import org.eteriaEngine.components.GameObject;

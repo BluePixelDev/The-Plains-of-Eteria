@@ -1,11 +1,14 @@
 package org.eteriaEngine.rendering;
 
-import org.eteriaEngine.interfaces.IDisposable;
 import org.eteriaEngine.core.Screen;
+import org.eteriaEngine.interfaces.IDisposable;
 import org.eteriaEngine.rendering.enums.FilterMode;
 import org.eteriaEngine.rendering.enums.GraphicsFormat;
 import org.eteriaEngine.rendering.enums.TextureWrapMode;
 
+/**
+ * Render texture that resizes along with the screen.
+ */
 public class RTHandle implements IDisposable {
     private FrameBuffer frameBuffer;
     private int width, height;
@@ -13,6 +16,10 @@ public class RTHandle implements IDisposable {
     private final TextureWrapMode wrapMode;
     private final GraphicsFormat graphicsFormat;
 
+    /**
+     * Allocates new render texture with specified size.
+     * Please note that the size cannot be 0 and will change along the screen size.
+     */
     public static RTHandle Alloc(int width, int height, FilterMode filterMode, TextureWrapMode wrapMode, GraphicsFormat graphicsFormat){
         return new RTHandle(width, height, filterMode, wrapMode, graphicsFormat);
     }

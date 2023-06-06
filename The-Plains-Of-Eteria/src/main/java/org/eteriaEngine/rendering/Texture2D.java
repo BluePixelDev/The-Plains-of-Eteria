@@ -15,7 +15,7 @@ public class Texture2D implements IDisposable {
     private int texID;
     private TextureWrapMode wrapMode = TextureWrapMode.REPEAT;
     private FilterMode filterMode = FilterMode.BILINEAR;
-    private boolean changed = false;
+    private boolean markModified = false;
 
     /**
      * @return ID of this texture.
@@ -30,7 +30,7 @@ public class Texture2D implements IDisposable {
     public void setWrapMode(TextureWrapMode wrapMode) {
         if(this.wrapMode != wrapMode){
             this.wrapMode = wrapMode;
-            changed = true;
+            markModified = true;
         }
     }
     /**
@@ -39,7 +39,7 @@ public class Texture2D implements IDisposable {
     public void setFilterMode(FilterMode filterMode) {
         if(this.filterMode != filterMode){
             this.filterMode = filterMode;
-            changed = true;
+            markModified = true;
         }
     }
 
@@ -52,7 +52,7 @@ public class Texture2D implements IDisposable {
         ByteBuffer imageBuffer = EngineUtility.convertToByteBuffer(bufferedImage);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bufferedImage.getWidth(), bufferedImage.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer);
         glBindTexture(GL_TEXTURE_2D, 0);
-        changed = true;
+        markModified = true;
     }
     public Texture2D(int width, int height){
         texID = glGenTextures();
@@ -60,7 +60,7 @@ public class Texture2D implements IDisposable {
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
-        changed = true;
+        markModified = true;
     }
     public Texture2D(int width, int height, GraphicsFormat graphicsFormat){
         texID = glGenTextures();
@@ -79,7 +79,7 @@ public class Texture2D implements IDisposable {
         );
 
         glBindTexture(GL_TEXTURE_2D, 0);
-        changed = true;
+        markModified = true;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Texture2D implements IDisposable {
 
     //Updates texture parameters to be ready for drawing.
     private void updateTextureParams(){
-        if(changed){
+        if(markModified){
             //Updating texture wrap
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, RenderUtility.GetWrapMode(wrapMode));
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, RenderUtility.GetWrapMode(wrapMode));
@@ -116,7 +116,7 @@ public class Texture2D implements IDisposable {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, RenderUtility.GetFilterMode(filterMode));
 
             glBindTexture(GL_TEXTURE_2D, 0);
-            changed = false;
+            markModified = false;
         }
     }
 }

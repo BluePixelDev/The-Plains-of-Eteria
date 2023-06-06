@@ -16,21 +16,18 @@ import static org.lwjgl.opengl.GL20.*;
  */
 class MaterialCommand<T> {
 
-    private final Material material;
     private final int propertyLocation;
     private final PropertyType propertyType;
     private final T propertyValue;
     private final int textureUnit;
 
-    MaterialCommand(Material material, int propertyLocation, PropertyType shaderPropertyType, T value) {
-        this.material = material;
+    MaterialCommand(int propertyLocation, PropertyType shaderPropertyType, T value) {
         this.propertyLocation = propertyLocation;
         this.propertyType = shaderPropertyType;
         this.propertyValue = value;
         this.textureUnit = -1;
     }
-    MaterialCommand(Material material, int propertyLocation, PropertyType shaderPropertyType, T value, int textureUnit) {
-        this.material = material;
+    MaterialCommand(int propertyLocation, PropertyType shaderPropertyType, T value, int textureUnit) {
         this.propertyLocation = propertyLocation;
         this.propertyType = shaderPropertyType;
         this.propertyValue = value;

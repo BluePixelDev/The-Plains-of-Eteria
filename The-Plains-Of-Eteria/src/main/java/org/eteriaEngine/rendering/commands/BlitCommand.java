@@ -1,4 +1,4 @@
-package org.eteriaEngine.rendering.command;
+package org.eteriaEngine.rendering.commands;
 
 import org.eteriaEngine.interfaces.ICommand;
 import org.eteriaEngine.rendering.RTHandle;

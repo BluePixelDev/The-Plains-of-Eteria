@@ -1,11 +1,11 @@
 package org.eteriaEngine.rendering.material;
 
 import org.eteriaEngine.assets.AssetDatabase;
+import org.eteriaEngine.rendering.Shader;
+import org.eteriaEngine.rendering.Texture2D;
 import org.eteriaEngine.rendering.enums.BlendingMode;
 import org.eteriaEngine.rendering.enums.CullingMode;
 import org.eteriaEngine.rendering.enums.DepthFunc;
-import org.eteriaEngine.rendering.Shader;
-import org.eteriaEngine.rendering.Texture2D;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -13,7 +13,6 @@ import org.joml.Vector4f;
 
 import java.util.HashMap;
 
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
@@ -54,11 +53,16 @@ public class Material {
         this.depthFunc = depthFunc;
     }
 
+    //BLENDING
+    public BlendingMode getBlendingMode() {
+        return blendingMode;
+    }
+    public void setBlendingMode(BlendingMode blendingMode) {
+        this.blendingMode = blendingMode;
+    }
+
     public Shader getShader() {
         return shader;
-    }
-    int getFreeTextureUnit(){
-        return textureUnit;
     }
 
     /**
@@ -74,38 +78,7 @@ public class Material {
         for (MaterialCommand<?> command : commands.values()) {
             command.applyCommand();
         }
-        applyCulling();
-        applyDepth();
-        applyBlending();
         clearCommands();
-    }
-    private void applyCulling(){
-        glEnable(GL_CULL_FACE);
-        switch (culling){
-            case BACK -> glCullFace(GL_BACK);
-            case FRONT -> glCullFace(GL_FRONT);
-            case BOTH -> glDisable(GL_CULL_FACE);
-        }
-    }
-    private void applyDepth(){
-        glEnable(GL_DEPTH_TEST);
-        switch (depthFunc){
-            case NEVER -> glDepthFunc(GL_NEVER);
-            case LESS -> glDepthFunc(GL_LESS);
-            case EQUAL -> glDepthFunc(GL_EQUAL);
-            case LESS_EQUAL -> glDepthFunc(GL_LEQUAL);
-            case GREATER -> glDepthFunc(GL_GREATER);
-            case NOT_EQUAL -> glDepthFunc(GL_NOTEQUAL);
-            case GREATER_EQUAL -> glDepthFunc(GL_GEQUAL);
-            case ALWAYS -> glDepthFunc(GL_ALWAYS);
-        }
-    }
-    private void applyBlending(){
-        glEnable(GL_BLEND);
-
-        if(blendingMode == BlendingMode.ADDITIVE){
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        }
     }
     /**
      * Unbinds this material for current rendering.
@@ -151,10 +124,10 @@ public class Material {
 
             MaterialCommand<T> propertyCommand;
             if(propertyType == PropertyType.TEXTURE_2D){
-                propertyCommand = new MaterialCommand<>(this, varLocation, propertyType, value, textureUnit);
+                propertyCommand = new MaterialCommand<>(varLocation, propertyType, value, textureUnit);
             }
             else {
-                propertyCommand = new MaterialCommand<>(this, varLocation, propertyType, value);
+                propertyCommand = new MaterialCommand<>(varLocation, propertyType, value);
             }
 
             if(commands.containsKey(propertyName)){

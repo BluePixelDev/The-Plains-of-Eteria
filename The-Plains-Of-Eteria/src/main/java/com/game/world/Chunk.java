@@ -3,7 +3,7 @@ import org.eteriaEngine.rendering.mesh.Mesh;
 import org.joml.*;
 
 public class Chunk {
-    private Vector3f position;
+    private final Vector3f position;
     private final int chunkTileSize;
     private final WorldMap worldMap;
     private final Mesh mesh;

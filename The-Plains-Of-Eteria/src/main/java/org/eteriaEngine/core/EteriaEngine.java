@@ -10,11 +10,11 @@ public final class EteriaEngine {
     }
 
     //Initializes the game engine.
-    void initialize(Game application){
+    void initialize(Engine application){
         window.createWindow();
 
-        ThreadGroup threadGroup = new ThreadGroup("Game");
-        Thread gameThread = new Thread(threadGroup, () -> {
+        ThreadGroup threadGroup = new ThreadGroup("Engine");
+        Thread engineThread = new Thread(threadGroup, () -> {
 
             window.makeContext();
             application.start();
@@ -43,7 +43,7 @@ public final class EteriaEngine {
 
             window.closeWindow();
         });
-        gameThread.start();
+        engineThread.start();
         window.pollEvents();
     }
 

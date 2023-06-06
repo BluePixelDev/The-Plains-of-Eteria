@@ -1,6 +1,7 @@
 package org.eteriaEngine.assets;
 
 import org.eteriaEngine.interfaces.IDisposable;
+
 import java.io.InputStream;
 
 abstract class Asset<T> implements IDisposable {

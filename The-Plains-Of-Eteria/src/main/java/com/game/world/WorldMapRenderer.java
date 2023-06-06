@@ -5,12 +5,11 @@ import org.eteriaEngine.components.GameObject;
 import org.eteriaEngine.rendering.Renderer;
 import org.eteriaEngine.rendering.Shader;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.command.CommandBuffer;
+import org.eteriaEngine.rendering.commands.CommandBuffer;
 import org.eteriaEngine.rendering.material.Material;
 import org.eteriaEngine.rendering.mesh.Mesh;
 import org.eteriaEngine.rendering.enums.FilterMode;
 import org.eteriaEngine.rendering.Texture2D;
-import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
 public class WorldMapRenderer extends Renderer {
@@ -48,7 +47,7 @@ public class WorldMapRenderer extends Renderer {
 
         for (Chunk chunk : worldMap.getChunks()) {
             Mesh chunkMesh = chunk.getMesh();
-            commandBuffer.drawMesh(chunkMesh, new Matrix4f().identity(), material);
+            commandBuffer.drawMesh(chunkMesh, transform().getTransformationMatrix(), material);
         }
     }
 }

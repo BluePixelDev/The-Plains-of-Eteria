@@ -50,7 +50,6 @@ public final class RenderUtility {
         }
         return mode;
     }
-
     /**
      * @return Int value of a GraphicsFormat.
      */

@@ -1,5 +1,6 @@
 package org.eteriaEngine.components;
 
+import org.eteriaEngine.Mathf;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -229,13 +230,12 @@ public class Transform extends Component{
     }
     //</editor-fold>
 
-    //---- TRANSFORMATION METHODS ----
-
     //---- ROTATION ----
     /**
      * Rotates transform in world space around axis with given angle.
      */
     public void rotate(float angle, Vector3f axis){
+        angle = angle * Mathf.degToRad;
         setRotation(getRotation().rotateAxis(angle, axis));
     }
     /**

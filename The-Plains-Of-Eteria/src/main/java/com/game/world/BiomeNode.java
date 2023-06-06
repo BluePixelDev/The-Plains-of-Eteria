@@ -1,11 +1,11 @@
 package com.game.world;
 
 public class BiomeNode {
-    private BiomeType biomeType;
-    private double humidity;
-    private double temperature;
+    private final BiomeType biomeType;
+    private final float humidity;
+    private final float temperature;
 
-    public BiomeNode(BiomeType biomeType, double humidity, double temperature) {
+    public BiomeNode(BiomeType biomeType, float humidity, float temperature) {
         this.biomeType = biomeType;
         this.humidity = humidity;
         this.temperature = temperature;
@@ -14,10 +14,10 @@ public class BiomeNode {
     public BiomeType getBiomeType() {
         return biomeType;
     }
-    public double getHumidity() {
+    public float getHumidity() {
         return humidity;
     }
-    public double getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 }

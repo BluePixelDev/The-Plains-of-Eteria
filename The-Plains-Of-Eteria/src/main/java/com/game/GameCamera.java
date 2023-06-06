@@ -1,4 +1,5 @@
-package com.game.components;
+package com.game;
+import org.eteriaEngine.Mathf;
 import org.eteriaEngine.core.Input;
 import org.eteriaEngine.core.Time;
 import org.eteriaEngine.components.GameObject;
@@ -13,7 +14,7 @@ public class GameCamera extends Camera {
     private float acc = 0.1f;
     private float dec = 0.08f;
     private float speed = 0.5f;
-    private Vector3f targetPosition = new Vector3f();
+    private final Vector3f targetPosition = new Vector3f();
 
     public GameCamera(GameObject gameObject) {
         super(gameObject);
@@ -22,7 +23,8 @@ public class GameCamera extends Camera {
     @Override
     public void start(){
         super.start();
-        targetPosition.z = 10f;
+        targetPosition.y = 20f;
+        setFar(1000f);
     }
     @Override
     public void update() {
@@ -36,16 +38,25 @@ public class GameCamera extends Camera {
         boolean back = Input.GetKey(GLFW_KEY_E);
         boolean forward = Input.GetKey(GLFW_KEY_Q);
 
-        float tX = left && right ? 0 : left ? -1 : right ? 1 : 0;
-        float tY = up && down ? 0 : up ? 1 : down ? -1 : 0;
-        float tZ = back && forward ? 0 : back ? -1 : forward ? 1 : 0;
+        boolean rotateRight = Input.GetKey(GLFW_KEY_R);
+        boolean rotateLeft = Input.GetKey(GLFW_KEY_T);
 
-        targetPosition.add(new Vector3f(tX, tY , tZ).mul(speed));
-        if(tX == 0 && tY == 0){
-            transform().setPosition(EngineUtility.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / acc));
+        float tX = left && right ? 0 : left ? -1 : right ? 1 : 0;
+        float tZ = up && down ? 0 : up ? -1 : down ? 1 : 0;
+        float tY = back && forward ? 0 : back ? -1 : forward ? 1 : 0;
+
+        float rY = rotateRight && rotateLeft ? 0 : rotateRight ? -1 : rotateLeft ? 1 : 0;
+
+        if(rY != 0){
+            transform().rotate(15 * Time.deltaTime(), new Vector3f(0, rY, 0));
+        }
+
+        targetPosition.add(new Vector3f(tX, tY, tZ).mul(speed));
+        if(tX == 0 && tZ == 0){
+            transform().setPosition(Mathf.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / acc));
         }
         else {
-            transform().setPosition(EngineUtility.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / dec));
+            transform().setPosition(Mathf.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / dec));
         }
 
     }

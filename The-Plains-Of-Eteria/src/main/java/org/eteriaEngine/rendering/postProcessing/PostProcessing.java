@@ -3,7 +3,7 @@ package org.eteriaEngine.rendering.postProcessing;
 import org.eteriaEngine.core.Screen;
 import org.eteriaEngine.rendering.RTHandle;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.command.CommandBuffer;
+import org.eteriaEngine.rendering.commands.CommandBuffer;
 import org.eteriaEngine.rendering.enums.FilterMode;
 import org.eteriaEngine.rendering.enums.GraphicsFormat;
 import org.eteriaEngine.rendering.enums.TextureWrapMode;

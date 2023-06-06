@@ -1,4 +1,4 @@
-package org.eteriaEngine.rendering.camera;
+package org.eteriaEngine.rendering.enums;
 
 /**
  * Projection modes available for Camera.

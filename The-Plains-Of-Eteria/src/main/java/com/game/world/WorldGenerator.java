@@ -1,5 +1,6 @@
 package com.game.world;
 
+import org.eteriaEngine.Mathf;
 import org.eteriaEngine.core.EngineUtility;
 import com.library.OpenSimplexNoise;
 import org.joml.Vector3f;
@@ -16,17 +17,17 @@ public class WorldGenerator {
     //Biome Generation.
     private final ArrayList<BiomeNode> landBiomeNodes = new ArrayList<>();
     private final ArrayList<BiomeNode> waterBiomeNodes = new ArrayList<>();
-    public double regionChunkSize = 1;
+    public float regionChunkSize = 1;
     private final OpenSimplexNoise humidityNoise;
     private final OpenSimplexNoise temperatureNoise;
-    private final double humidityMapDensity = 4;
-    private final double temperatureMapDensity = 5;
+    private final float humidityMapDensity = 4;
+    private final float temperatureMapDensity = 5;
 
     //Land Generation.
     private final int worldHeight = 32;
     private final OpenSimplexNoise landNoise;
-    private final double landMapDensity = 24;
-    private final double detailHeightMapDensity = 4;
+    private final float landMapDensity = 24;
+    private final float detailHeightMapDensity = 4;
 
     public WorldGenerator(WorldMap tileMap) {
         this.worldMap = tileMap;
@@ -38,11 +39,10 @@ public class WorldGenerator {
         humidityNoise = new OpenSimplexNoise(random.nextLong());
         temperatureNoise = new OpenSimplexNoise(random.nextLong());
 
-        landBiomeNodes.add(new BiomeNode(BiomeType.GRASSLANDS, 0.6, 0.5));
-        landBiomeNodes.add(new BiomeNode(BiomeType.BEACH, 0.8, 0.6));
-        landBiomeNodes.add(new BiomeNode(BiomeType.DESERT, 0.2, 1));
-
-        waterBiomeNodes.add(new BiomeNode(BiomeType.OCEAN, 1, 0.5));
+        landBiomeNodes.add(new BiomeNode(BiomeType.GRASSLANDS, 0.6f, 0.5f));
+        landBiomeNodes.add(new BiomeNode(BiomeType.BEACH, 0.8f, 0.6f));
+        landBiomeNodes.add(new BiomeNode(BiomeType.DESERT, 0.2f, 1));
+        waterBiomeNodes.add(new BiomeNode(BiomeType.OCEAN, 1, 0.5f));
     }
     public WorldGenerator(WorldMap tileMap, long seed) {
         this.worldMap = tileMap;
@@ -110,7 +110,7 @@ public class WorldGenerator {
         TileType targetTileType = TileType.WATER;
         BiomeType targetBiomeType = BiomeType.OCEAN;
 
-        double height = getTileHeight(position);
+        float height = getTileHeight(position);
         BiomeType biomeType = getTileBiome(position, height);
 
         if(biomeType == BiomeType.GRASSLANDS){
@@ -129,28 +129,28 @@ public class WorldGenerator {
      * Generates height by combining noises.
      * @return Height of the tile.
      */
-    public double getTileHeight(Vector3f position){
+    public float getTileHeight(Vector3f position){
 
-        double baseHeightMap = landNoise.eval(
+        float baseHeightMap = (float) landNoise.eval(
                 (position.x / worldMap.getTileScale()) / landMapDensity,
                 (position.y / worldMap.getTileScale()) / landMapDensity, 0d
         );
 
-        double detailHeightMap = landNoise.eval(
+        float detailHeightMap = (float) landNoise.eval(
                 (position.x / worldMap.getTileScale()) / detailHeightMapDensity,
                 (position.y / worldMap.getTileScale()) / detailHeightMapDensity, 0d
         );
 
-        double heightMapDetailed = EngineUtility.lerp(baseHeightMap, detailHeightMap, (Math.abs(baseHeightMap) + 1) / 2 * 0.25);
+        float heightMapDetailed = Mathf.lerp(baseHeightMap, detailHeightMap, (Math.abs(baseHeightMap) + 1) / 2 * 0.25f);
         return heightMapDetailed;
     }
-    public BiomeType getTileBiome(Vector3f position, double height){
+    public BiomeType getTileBiome(Vector3f position, float height){
 
-        double humidity = humidityNoise.eval(
+        float humidity = (float) humidityNoise.eval(
                 (position.x / worldMap.chunkUnitSize()) / humidityMapDensity,
                 (position.y / worldMap.chunkUnitSize()) / humidityMapDensity
         );
-        double temperature = temperatureNoise.eval(
+        float temperature = (float)temperatureNoise.eval(
                 (position.x / worldMap.chunkUnitSize()) / temperatureMapDensity,
                 (position.y / worldMap.chunkUnitSize()) / temperatureMapDensity
         );
@@ -160,13 +160,13 @@ public class WorldGenerator {
         temperature = (temperature + 1) / 2;
 
         BiomeType targetBiome = BiomeType.OCEAN;
-        double minCost = Double.MAX_VALUE;
+        float minCost = Float.MAX_VALUE;
         var biomeNodes = height >= 0 ? landBiomeNodes : waterBiomeNodes;
 
         for (BiomeNode node: biomeNodes) {
-            double nodeCost = node.getHumidity() + node.getTemperature();
-            double currentCost = humidity + temperature;
-            double cost = Math.abs(nodeCost - currentCost);
+            float nodeCost = node.getHumidity() + node.getTemperature();
+            float currentCost = humidity + temperature;
+            float cost = Math.abs(nodeCost - currentCost);
 
             if(cost < minCost){
                 targetBiome = node.getBiomeType();
@@ -174,7 +174,7 @@ public class WorldGenerator {
             }
         }
 
-        height = Math.ceil(height * worldHeight);
+        height = Mathf.ceil(height * worldHeight);
         if(height > 0 && height < 3){
             targetBiome = BiomeType.BEACH;
         }

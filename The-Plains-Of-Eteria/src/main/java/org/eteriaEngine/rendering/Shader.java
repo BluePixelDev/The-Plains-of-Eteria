@@ -2,7 +2,7 @@ package org.eteriaEngine.rendering;
 import java.util.Objects;
 
 public class Shader {
-    private int shaderID;
+    private final int shaderID;
 
     public int getShaderID(){
         return shaderID;

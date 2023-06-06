@@ -43,7 +43,6 @@ public class Tile {
     public Matrix4f getTransform(){
         Matrix4f mat4 = new Matrix4f();
         mat4.identity();
-        mat4.translate(position);
         return mat4;
     }
 }
