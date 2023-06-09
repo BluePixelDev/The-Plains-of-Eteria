@@ -7,7 +7,7 @@ public final class Time {
     private static long lastTimeNano;
     private static long deltaTimeNano;
 
-    public static void update(){
+    static void update(){
         if(!hasStarted){
             startTimeNano = System.nanoTime();
             hasStarted = true;

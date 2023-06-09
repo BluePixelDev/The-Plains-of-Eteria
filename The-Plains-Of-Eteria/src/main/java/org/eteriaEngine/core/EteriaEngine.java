@@ -3,19 +3,13 @@ package org.eteriaEngine.core;
 import org.eteriaEngine.rendering.RenderManager;
 import org.eteriaEngine.scenes.SceneManager;
 
-public final class EteriaEngine {
-    private static final Window window = new Window();
-
-    EteriaEngine(){
-    }
-
-    //Initializes the game engine.
-    void initialize(Engine application){
-        window.createWindow();
-
-        ThreadGroup threadGroup = new ThreadGroup("Engine");
+public class EteriaEngine {
+    static final Window window = new Window();
+    EteriaEngine(EteriaApplication application){
+        ThreadGroup threadGroup = new ThreadGroup("Eteria_Engine");
         Thread engineThread = new Thread(threadGroup, () -> {
 
+            Input.initialize();
             window.makeContext();
             application.start();
             window.showWindow();
@@ -24,6 +18,7 @@ public final class EteriaEngine {
                 long startTime = System.nanoTime();
 
                 Time.update();
+                Input.update();
                 SceneManager.instance().update();
                 RenderManager.get().render(window);
 
@@ -37,8 +32,6 @@ public final class EteriaEngine {
                         throw new RuntimeException(e);
                     }
                 }
-
-
             }
 
             window.closeWindow();

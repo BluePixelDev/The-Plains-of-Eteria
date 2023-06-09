@@ -4,7 +4,7 @@ import org.eteriaEngine.core.Input;
 import org.eteriaEngine.core.Time;
 import org.eteriaEngine.components.GameObject;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.core.EngineUtility;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -14,6 +14,7 @@ public class GameCamera extends Camera {
     private float acc = 0.1f;
     private float dec = 0.08f;
     private float speed = 0.5f;
+    private float rotation;
     private final Vector3f targetPosition = new Vector3f();
 
     public GameCamera(GameObject gameObject) {
@@ -30,33 +31,32 @@ public class GameCamera extends Camera {
     public void update() {
         super.update();
 
-        boolean up = Input.GetKey(GLFW_KEY_W);
-        boolean down = Input.GetKey(GLFW_KEY_S);
-        boolean left = Input.GetKey(GLFW_KEY_A);
-        boolean right = Input.GetKey(GLFW_KEY_D);
+        boolean up = Input.getKey(GLFW_KEY_W);
+        boolean down = Input.getKey(GLFW_KEY_S);
+        boolean left = Input.getKey(GLFW_KEY_A);
+        boolean right = Input.getKey(GLFW_KEY_D);
 
-        boolean back = Input.GetKey(GLFW_KEY_E);
-        boolean forward = Input.GetKey(GLFW_KEY_Q);
-
-        boolean rotateRight = Input.GetKey(GLFW_KEY_R);
-        boolean rotateLeft = Input.GetKey(GLFW_KEY_T);
+        boolean back = Input.getKey(GLFW_KEY_E);
+        boolean forward = Input.getKey(GLFW_KEY_Q);
 
         float tX = left && right ? 0 : left ? -1 : right ? 1 : 0;
         float tZ = up && down ? 0 : up ? -1 : down ? 1 : 0;
         float tY = back && forward ? 0 : back ? -1 : forward ? 1 : 0;
 
-        float rY = rotateRight && rotateLeft ? 0 : rotateRight ? -1 : rotateLeft ? 1 : 0;
+        rotation -= Input.getMouseDelta().x * Time.deltaTime();
+        transform().setLocalRotation(new Quaternionf().rotationY(rotation));
 
-        if(rY != 0){
-            transform().rotate(15 * Time.deltaTime(), new Vector3f(0, rY, 0));
-        }
+        Vector3f pos = new Vector3f();
+        pos.add(transform().right().mul(tX));
+        pos.add(transform().up().mul(tY));
+        pos.add(transform().forward().mul(tZ));
 
-        targetPosition.add(new Vector3f(tX, tY, tZ).mul(speed));
+        targetPosition.add(pos.mul(speed));
         if(tX == 0 && tZ == 0){
-            transform().setPosition(Mathf.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / acc));
+            transform().setLocalPosition(Mathf.lerp(transform().getLocalPosition(), targetPosition,  Time.deltaTime() / acc));
         }
         else {
-            transform().setPosition(Mathf.lerp(transform().getPosition(), targetPosition,  Time.deltaTime() / dec));
+            transform().setLocalPosition(Mathf.lerp(transform().getLocalPosition(), targetPosition,  Time.deltaTime() / dec));
         }
 
     }

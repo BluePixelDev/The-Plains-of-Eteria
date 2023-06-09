@@ -23,23 +23,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public final class Window{
 
     // The window handle
-    private volatile long windowID;
+    private volatile long window;
 
-
-    /**
-     * Returns ID of this window.
-     */
-    public long getWindowID() {
-        return windowID;
-    }
-    public boolean shouldWindowClose(){
-        return glfwWindowShouldClose(windowID);
-    }
-
-    /**
-     * Creates new window and assigns values.
-     */
-    public void createWindow() {
+    public Window(){
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
         // Set up an error callback. The default implementation
@@ -56,16 +42,9 @@ public final class Window{
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 
         // Create the window
-        windowID = glfwCreateWindow(Screen.width(), Screen.height(), "", NULL, NULL);
-        if ( windowID == NULL )
+        window = glfwCreateWindow(Screen.width(), Screen.height(), "", NULL, NULL);
+        if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(windowID, (window, key, scancode, action, mods) -> {
-            Input.registerInput(key, action);
-            if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-        });
 
         // Get the thread stack and push a new frame
         try (MemoryStack stack = stackPush() ) {
@@ -73,7 +52,7 @@ public final class Window{
             IntBuffer pHeight = stack.mallocInt(1); // int*
 
             // Get the window size passed to glfwCreateWindow
-            glfwGetWindowSize(windowID, pWidth, pHeight);
+            glfwGetWindowSize(window, pWidth, pHeight);
 
             // Get the resolution of the primary monitor
             GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -81,11 +60,21 @@ public final class Window{
             // Center the window
             assert vidmode != null;
             glfwSetWindowPos(
-                    windowID,
+                    window,
                     (vidmode.width() - pWidth.get(0)) / 2,
                     (vidmode.height() - pHeight.get(0)) / 2
             );
         } // the stack frame is popped automatically
+    }
+
+    /**
+     * Returns ID of this window.
+     */
+    public long getWindow() {
+        return window;
+    }
+    public boolean shouldWindowClose(){
+        return glfwWindowShouldClose(window);
     }
 
     //---- CONTROL API ----
@@ -94,8 +83,8 @@ public final class Window{
      */
     public void closeWindow() {
         // Free the window callbacks and destroy the window
-        glfwFreeCallbacks(windowID);
-        glfwDestroyWindow(windowID);
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
 
         // Terminate GLFW and free the error callback
         glfwTerminate();
@@ -111,26 +100,25 @@ public final class Window{
      * Sets resolution of the window.
      */
     public void setResolution(Resolution resolution){
-       glfwSetWindowSize(windowID, resolution.width(), resolution.height());
+       glfwSetWindowSize(window, resolution.width(), resolution.height());
        GL11.glViewport(0,0,  resolution.width(), resolution.height());
        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
        assert vidmode != null;
-       glfwSetWindowPos(windowID, vidmode.width() / 2 - resolution.width() / 2, vidmode.height() / 2 - resolution.height() / 2);
+       glfwSetWindowPos(window, vidmode.width() / 2 - resolution.width() / 2, vidmode.height() / 2 - resolution.height() / 2);
     }
     public void showWindow(){
         // Make the window visible
-        glfwShowWindow(windowID);
+        glfwShowWindow(window);
     }
     public void hideWindow(){
         // Make the window visible
-        glfwHideWindow(windowID);
+        glfwHideWindow(window);
     }
-
     /**
      * Makes context required for rendering.
      */
     public void makeContext(){
-        glfwMakeContextCurrent(getWindowID());
+        glfwMakeContextCurrent(getWindow());
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
         // LWJGL detects the context that is current in the current thread,
@@ -142,18 +130,16 @@ public final class Window{
         // Enable v-sync
         glfwSwapInterval(1);
     }
-
     /**
      * Sets current window title.
      */
     public void setWindowTitle(String title){
-        glfwSetWindowTitle(windowID, title);
+        glfwSetWindowTitle(window, title);
     }
     public void setWindowIcon(BufferedImage image){
         ByteBuffer imageBuffer = EngineUtility.convertToByteBuffer(image);
-        glfwSetWindowIcon(windowID, new GLFWImage.Buffer(imageBuffer));
+        glfwSetWindowIcon(window, new GLFWImage.Buffer(imageBuffer));
     }
-
     /**
      * Polls events. In other words, listens to keyboard input.
      */
@@ -175,6 +161,6 @@ public final class Window{
      * in order to swap buffers.
      */
     public void stopRendering(){
-        glfwSwapBuffers(windowID); // swap the color buffers
+        glfwSwapBuffers(window); // swap the color buffers
     }
 }

@@ -1,10 +1,10 @@
 package com.game;
 import org.eteriaEngine.core.Application;
-import org.eteriaEngine.core.Engine;
+import org.eteriaEngine.core.EteriaApplication;
 import org.eteriaEngine.core.Screen;
 import org.eteriaEngine.scenes.SceneManager;
 
-public class Main extends Engine {
+public class Main extends EteriaApplication {
     public static void main(String[] args) {
         launch();
     }

@@ -18,14 +18,14 @@ public final class Screen {
         Window window = EteriaEngine.getWindow();
 
         if(fullscreen){
-            glfwSetWindowPos(window.getWindowID(), 0, 0);
-            glfwSetWindowAttrib(window.getWindowID(), GLFW_DECORATED, GLFW_FALSE);
+            glfwSetWindowPos(window.getWindow(), 0, 0);
+            glfwSetWindowAttrib(window.getWindow(), GLFW_DECORATED, GLFW_FALSE);
 
             Resolution[] resolutions = getResolutions();
             currentResolution = resolutions[resolutions.length - 1];
         }
         else{
-            glfwSetWindowAttrib(window.getWindowID(), GLFW_DECORATED, GLFW_TRUE);
+            glfwSetWindowAttrib(window.getWindow(), GLFW_DECORATED, GLFW_TRUE);
         }
     }
     /**
@@ -43,7 +43,7 @@ public final class Screen {
         currentResolution = resolution;
         Window window = EteriaEngine.getWindow();
 
-        if(window.getWindowID() != 0){
+        if(window.getWindow() != 0){
             window.setResolution(resolution);
         }
     }
@@ -55,7 +55,7 @@ public final class Screen {
         Window window = EteriaEngine.getWindow();
         currentResolution = resolution;
 
-        if(window.getWindowID() != 0){
+        if(window.getWindow() != 0){
             window.setResolution(resolution);
         }
     }

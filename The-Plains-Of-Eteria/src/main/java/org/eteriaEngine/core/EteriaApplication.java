@@ -2,25 +2,17 @@ package org.eteriaEngine.core;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class Engine {
+public abstract class EteriaApplication {
 
-    public Engine(){
-    }
     public abstract void start();
 
     public static void launch(){
-        EteriaEngine engine = new EteriaEngine();
-        Engine application = getEngine();
-
-        if(application != null){
-            engine.initialize(application);
-        }
+        EteriaApplication application = getApplication();
+        new EteriaEngine(application);
     }
-    public static void launch(Class<? extends Engine> engineClass){
-        EteriaEngine engine = new EteriaEngine();
-
+    public static void launch(Class<? extends EteriaApplication> engineClass){
         try {
-            engine.initialize(engineClass.getConstructor().newInstance());
+            new EteriaEngine(engineClass.getConstructor().newInstance());
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
@@ -29,18 +21,16 @@ public abstract class Engine {
     }
 
     //Returns new instance of class that called launch() method.
-    private static Engine getEngine() {
+    private static EteriaApplication getApplication() {
         StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         StackTraceElement ste = stElements[stElements.length - 1];
 
         try {
             Class<?> cl = Class.forName(ste.getClassName());
-            if(Engine.class.isAssignableFrom(cl)){
+            if(EteriaApplication.class.isAssignableFrom(cl)){
                 Object obj = cl.getConstructor().newInstance();
 
-                Engine.class.cast(obj);
-
-                return (Engine) obj;
+                return (EteriaApplication) obj;
             }
         } catch (ClassNotFoundException | InvocationTargetException | IllegalAccessException | InstantiationException |
                  NoSuchMethodException e) {

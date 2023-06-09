@@ -16,8 +16,7 @@ public class TestScene extends Scene {
         System.out.println("Entered test scene!");
 
         //---- CAMERA INITIALIZATION ----
-        GameObject cameraObject = new GameObject("Camera");
-        cameraObject.transform().rotate(-15f, new Vector3f(1f, 0, 0));
+        GameObject cameraObject = new GameObject("camera");
         Camera gameCamera = cameraObject.addComponent(GameCamera.class);
         CameraManager.setCurrentCamera(gameCamera);
         addToScene(cameraObject);
