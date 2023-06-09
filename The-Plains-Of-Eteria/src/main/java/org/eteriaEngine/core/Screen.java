@@ -64,9 +64,10 @@ public final class Screen {
      */
     public static Resolution[] getResolutions(){
         GLFWVidMode.Buffer modes = glfwGetVideoModes(glfwGetPrimaryMonitor());
+        assert modes != null;
 
-        Resolution[] resolutions = new Resolution[modes.sizeof()];
-        for(int i = 0; i < modes.sizeof(); i++){
+        Resolution[] resolutions = new Resolution[modes.limit()];
+        for(int i = 0; i < resolutions.length; i++){
             resolutions[i] = new Resolution(
                     modes.get(i).width(),
                     modes.get(i).height(),
