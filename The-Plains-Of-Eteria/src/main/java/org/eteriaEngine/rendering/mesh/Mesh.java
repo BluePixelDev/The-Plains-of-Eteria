@@ -47,7 +47,7 @@ public class Mesh implements IDisposable {
     public int getMeshID() {
         return meshID;
     }
-    public int getElementLength(){
+    public int getIndicesCount(){
         return elements.length * 3;
     }
 

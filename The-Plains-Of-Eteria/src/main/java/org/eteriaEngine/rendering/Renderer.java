@@ -2,8 +2,8 @@ package org.eteriaEngine.rendering;
 
 import org.eteriaEngine.components.Component;
 import org.eteriaEngine.components.GameObject;
+import org.eteriaEngine.rendering.commandBuffer.CommandBuffer;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.commands.CommandBuffer;
 import org.eteriaEngine.rendering.material.Material;
 import org.joml.Vector3f;
 

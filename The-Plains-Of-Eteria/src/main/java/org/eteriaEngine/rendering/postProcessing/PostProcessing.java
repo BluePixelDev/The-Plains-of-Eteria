@@ -3,7 +3,7 @@ package org.eteriaEngine.rendering.postProcessing;
 import org.eteriaEngine.core.Screen;
 import org.eteriaEngine.rendering.RTHandle;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.commands.CommandBuffer;
+import org.eteriaEngine.rendering.commandBuffer.CommandBuffer;
 import org.eteriaEngine.rendering.enums.FilterMode;
 import org.eteriaEngine.rendering.enums.GraphicsFormat;
 import org.eteriaEngine.rendering.enums.TextureWrapMode;
@@ -38,9 +38,9 @@ public class PostProcessing {
         postEffects.add(effect);
     }
 
-    public void render(Camera camera, CommandBuffer commandBuffer, RTHandle rtHandle){
+    public void render(Camera camera, CommandBuffer commandBuffer, RTHandle in, RTHandle out){
         commandBuffer.setRenderTarget(postRTA);
-        commandBuffer.blit(rtHandle);
+        commandBuffer.blit(in);
 
         for(int i = 0; i < postEffects.size(); i++){
             if(i%2 != 1) {
@@ -49,9 +49,9 @@ public class PostProcessing {
             else{
                 commandBuffer.setRenderTarget(postRTA);
             }
-            postEffects.get(i).render(camera, commandBuffer, rtHandle);
+            postEffects.get(i).render(camera, commandBuffer, in);
         }
-        commandBuffer.setRenderTarget(null);
-        commandBuffer.blit( postEffects.size()%2 != 1 ? postRTA : postRTB);
+        commandBuffer.setRenderTarget(out);
+        commandBuffer.blit(postEffects.size()%2 != 1 ? postRTA : postRTB);
     }
 }

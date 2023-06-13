@@ -9,6 +9,6 @@ public enum PropertyType {
     MATRIX4F,
     VECTOR2F,
     VECTOR3F,
-    VECTOR4,
+    VECTOR4F,
     TEXTURE_2D
 }

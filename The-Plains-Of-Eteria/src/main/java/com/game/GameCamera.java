@@ -14,7 +14,8 @@ public class GameCamera extends Camera {
     private float acc = 0.1f;
     private float dec = 0.08f;
     private float speed = 0.5f;
-    private float rotation;
+    private float rotationY;
+    private float rotationX;
     private final Vector3f targetPosition = new Vector3f();
 
     public GameCamera(GameObject gameObject) {
@@ -43,8 +44,9 @@ public class GameCamera extends Camera {
         float tZ = up && down ? 0 : up ? -1 : down ? 1 : 0;
         float tY = back && forward ? 0 : back ? -1 : forward ? 1 : 0;
 
-        rotation -= Input.getMouseDelta().x * Time.deltaTime();
-        transform().setLocalRotation(new Quaternionf().rotationY(rotation));
+        rotationY -= Input.getMouseDelta().x * Time.deltaTime() * Mathf.degToRad * 50;
+        rotationX -= Input.getMouseDelta().y * Time.deltaTime() * Mathf.degToRad * 50;
+        transform().setLocalRotation(new Quaternionf().rotateLocalX(rotationX).rotateLocalY(rotationY));
 
         Vector3f pos = new Vector3f();
         pos.add(transform().right().mul(tX));

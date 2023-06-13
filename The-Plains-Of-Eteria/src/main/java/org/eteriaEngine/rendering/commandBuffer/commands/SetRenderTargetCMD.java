@@ -1,4 +1,4 @@
-package org.eteriaEngine.rendering.commands;
+package org.eteriaEngine.rendering.commandBuffer.commands;
 
 import org.eteriaEngine.core.Screen;
 import org.eteriaEngine.interfaces.ICommand;
@@ -8,9 +8,9 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
-class SetRenderTargetCommand implements ICommand {
+public class SetRenderTargetCMD implements ICommand {
     private final RTHandle rtHandle;
-    public SetRenderTargetCommand(RTHandle rtHandle){
+    public SetRenderTargetCMD(RTHandle rtHandle){
         this.rtHandle = rtHandle;
     }
 
@@ -24,3 +24,4 @@ class SetRenderTargetCommand implements ICommand {
         rtHandle.bind();
     }
 }
+

@@ -31,5 +31,5 @@ void main(){
     uv = vec2(uv.x, -uv.y);
 
     vec4 texColor = texture(_mainTex, uv);
-    color = texColor;
+    color = vec4(1);
 }

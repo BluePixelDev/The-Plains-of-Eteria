@@ -5,7 +5,7 @@ import org.eteriaEngine.components.GameObject;
 import org.eteriaEngine.rendering.Renderer;
 import org.eteriaEngine.rendering.Shader;
 import org.eteriaEngine.rendering.camera.Camera;
-import org.eteriaEngine.rendering.commands.CommandBuffer;
+import org.eteriaEngine.rendering.commandBuffer.CommandBuffer;
 import org.eteriaEngine.rendering.material.Material;
 import org.eteriaEngine.rendering.mesh.Mesh;
 import org.eteriaEngine.rendering.enums.FilterMode;

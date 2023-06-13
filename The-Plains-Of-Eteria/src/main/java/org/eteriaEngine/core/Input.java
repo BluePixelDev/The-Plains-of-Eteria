@@ -5,6 +5,7 @@ import org.eteriaEngine.interfaces.IUpdate;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import java.awt.*;
 import java.nio.DoubleBuffer;
 import java.util.HashMap;
 import static org.lwjgl.glfw.GLFW.*;
@@ -17,6 +18,7 @@ public final class Input {
 
     static void initialize(){
         Window engineWindow = EteriaEngine.getWindow();
+        //glfwSetInputMode(engineWindow.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(engineWindow.getWindow(), (window, key, scancode, action, mods) -> {

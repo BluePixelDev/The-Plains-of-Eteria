@@ -27,8 +27,8 @@ public class Material {
     private BlendingMode blendingMode = BlendingMode.ADDITIVE;
 
     private final HashMap<String, Integer> uniformCache = new HashMap<>();
-    private final HashMap<String, MaterialCommand<?>> commands = new HashMap<>();
-    private int textureUnit = 0;
+    private final HashMap<String, SetPropertyCMD<?>> commands = new HashMap<>();
+    private int currentTexUnit = 0;
 
     public Material(String shaderName){
         this.shader = (Shader) AssetDatabase.loadAssetAtPath(shaderName);
@@ -75,10 +75,10 @@ public class Material {
      * Applies all commands queued inside the material.
      */
     public void apply(){
-        for (MaterialCommand<?> command : commands.values()) {
+        for (SetPropertyCMD<?> command : commands.values()) {
             command.applyCommand();
         }
-        clearCommands();
+        clear();
     }
     /**
      * Unbinds this material for current rendering.
@@ -89,9 +89,10 @@ public class Material {
     /**
      * Clears all commands stored inside this material.
      */
-    public void clearCommands(){
+    public void clear(){
         commands.clear();
-        textureUnit = 0;
+        uniformCache.clear();
+        currentTexUnit = 0;
     }
 
     //---- PROPERTY COMMANDS ----
@@ -108,7 +109,7 @@ public class Material {
         CreateCommand(propertyName, PropertyType.VECTOR3F, value);
     }
     public void setVector4f(String propertyName, Vector4f value){
-        CreateCommand(propertyName, PropertyType.VECTOR4, value);
+        CreateCommand(propertyName, PropertyType.VECTOR4F, value);
     }
     public void setMatrix4f(String propertyName, Matrix4f value){
         CreateCommand(propertyName, PropertyType.MATRIX4F, value);
@@ -122,12 +123,12 @@ public class Material {
         int varLocation = getPropertyLocation(propertyName, shader);
         if(varLocation != -1){
 
-            MaterialCommand<T> propertyCommand;
+            SetPropertyCMD<T> propertyCommand;
             if(propertyType == PropertyType.TEXTURE_2D){
-                propertyCommand = new MaterialCommand<>(varLocation, propertyType, value, textureUnit);
+                propertyCommand = new SetPropertyCMD<>(varLocation, propertyType, value, currentTexUnit);
             }
             else {
-                propertyCommand = new MaterialCommand<>(varLocation, propertyType, value);
+                propertyCommand = new SetPropertyCMD<>(varLocation, propertyType, value);
             }
 
             if(commands.containsKey(propertyName)){
@@ -136,7 +137,7 @@ public class Material {
             else{
                 commands.put(propertyName, propertyCommand);
                 if(propertyType == PropertyType.TEXTURE_2D){
-                    textureUnit++;
+                    currentTexUnit++;
                 }
             }
         }

@@ -14,20 +14,20 @@ import static org.lwjgl.opengl.GL20.*;
 /**
  * Command of material that handles uploading of values into the shader.
  */
-class MaterialCommand<T> {
+class SetPropertyCMD<T> {
 
     private final int propertyLocation;
     private final PropertyType propertyType;
     private final T propertyValue;
     private final int textureUnit;
 
-    MaterialCommand(int propertyLocation, PropertyType shaderPropertyType, T value) {
+    SetPropertyCMD(int propertyLocation, PropertyType shaderPropertyType, T value) {
         this.propertyLocation = propertyLocation;
         this.propertyType = shaderPropertyType;
         this.propertyValue = value;
         this.textureUnit = -1;
     }
-    MaterialCommand(int propertyLocation, PropertyType shaderPropertyType, T value, int textureUnit) {
+    SetPropertyCMD(int propertyLocation, PropertyType shaderPropertyType, T value, int textureUnit) {
         this.propertyLocation = propertyLocation;
         this.propertyType = shaderPropertyType;
         this.propertyValue = value;
@@ -49,7 +49,7 @@ class MaterialCommand<T> {
                 Vector3f vec3 = (Vector3f)propertyValue;
                 glUniform3f(propertyLocation, vec3.x, vec3.y, vec3.z);
             }
-            case VECTOR4 -> {
+            case VECTOR4F -> {
                 Vector4f vec4 = new Vector4f((Vector4f) propertyValue);
                 glUniform4f(propertyLocation, vec4.x, vec4.y, vec4.z, vec4.w);
             }
@@ -60,9 +60,9 @@ class MaterialCommand<T> {
                 glUniformMatrix4fv(propertyLocation, false, matBuffer);
             }
             case TEXTURE_2D -> {
-                glUniform1f(propertyLocation, textureUnit);
-                ((Texture2D) propertyValue).bind();
                 activateTexture(textureUnit);
+                glUniform1i(propertyLocation, textureUnit);
+                ((Texture2D) propertyValue).bind();
             }
         }
     }
@@ -70,8 +70,5 @@ class MaterialCommand<T> {
     //Handles texture activation for textures in slots from 0 to 15.
     private void activateTexture(int unit){
         glActiveTexture(GL_TEXTURE0 + unit);
-    }
-    private void deactivateTexture(int unit){
-        glDisable(GL_TEXTURE0 + unit);
     }
 }

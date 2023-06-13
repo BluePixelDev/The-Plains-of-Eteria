@@ -1,10 +1,10 @@
-package org.eteriaEngine.rendering.commands;
+package org.eteriaEngine.rendering.commandBuffer.commands;
 
 import org.eteriaEngine.interfaces.ICommand;
 
 import static org.lwjgl.opengl.GL11.*;
 
-class ClearRenderTargetCommand implements ICommand {
+class ClearCMD implements ICommand {
 
     @Override
     public void execute() {

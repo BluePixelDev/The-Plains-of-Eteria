@@ -6,11 +6,13 @@ import org.eteriaEngine.rendering.enums.FilterMode;
 import org.eteriaEngine.rendering.enums.GraphicsFormat;
 import org.eteriaEngine.rendering.enums.TextureWrapMode;
 
+import java.util.Objects;
+
 /**
  * Render texture that resizes along with the screen.
  */
 public class RTHandle implements IDisposable {
-    private FrameBuffer frameBuffer;
+    private RenderTexture frameBuffer;
     private int width, height;
     private final FilterMode filterMode;
     private final TextureWrapMode wrapMode;
@@ -30,7 +32,7 @@ public class RTHandle implements IDisposable {
         this.filterMode = filterMode;
         this.wrapMode = wrapMode;
         this.graphicsFormat = graphicsFormat;
-        frameBuffer = new FrameBuffer(width, height, wrapMode, filterMode, graphicsFormat);
+        frameBuffer = new RenderTexture(width, height, wrapMode, filterMode, graphicsFormat);
     }
 
     public void bind(){
@@ -45,7 +47,7 @@ public class RTHandle implements IDisposable {
             frameBuffer.dispose();
             width = currentWidth;
             height = currentHeight;
-            frameBuffer = new FrameBuffer(width, height, wrapMode, filterMode, graphicsFormat);
+            frameBuffer = new RenderTexture(width, height, wrapMode, filterMode, graphicsFormat);
         }
         frameBuffer.bind();
     }
@@ -71,5 +73,18 @@ public class RTHandle implements IDisposable {
     public void dispose() {
         frameBuffer.dispose();
         frameBuffer = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RTHandle rtHandle = (RTHandle) o;
+        return width == rtHandle.width && height == rtHandle.height && Objects.equals(frameBuffer, rtHandle.frameBuffer) && filterMode == rtHandle.filterMode && wrapMode == rtHandle.wrapMode && graphicsFormat == rtHandle.graphicsFormat;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(frameBuffer, width, height, filterMode, wrapMode, graphicsFormat);
     }
 }

@@ -12,12 +12,12 @@ import static org.lwjgl.opengl.GL30.*;
  * Using FrameBuffer we can render to non-default frame buffer and thus
  * render without disturbing the main screen.
  */
-public class FrameBuffer implements IDisposable {
-    private int width;
-    private int height;
+public class RenderTexture implements IDisposable {
+    private final int width;
+    private final int height;
 
-    private int bufferId;
-    private Texture2D texture;
+    private final int bufferId;
+    private final Texture2D texture;
 
     public int getFrameBufferID(){
         return bufferId;
@@ -26,7 +26,7 @@ public class FrameBuffer implements IDisposable {
         return texture;
     }
 
-    public FrameBuffer(int width, int height, TextureWrapMode wrapMode, FilterMode filterMode, GraphicsFormat graphicsFormat){
+    public RenderTexture(int width, int height, TextureWrapMode wrapMode, FilterMode filterMode, GraphicsFormat graphicsFormat){
         this.width = width;
         this.height = height;
 
