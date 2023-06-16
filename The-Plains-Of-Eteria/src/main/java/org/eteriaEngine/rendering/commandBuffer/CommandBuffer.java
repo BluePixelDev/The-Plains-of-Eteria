@@ -10,7 +10,9 @@ import org.eteriaEngine.rendering.enums.CullingMode;
 import org.eteriaEngine.rendering.enums.DepthFunc;
 import org.eteriaEngine.rendering.material.Material;
 import org.eteriaEngine.rendering.mesh.Mesh;
+import org.eteriaEngine.rendering.mesh.Primitive;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +46,10 @@ public class CommandBuffer implements ICommand{
     }
     public void drawMesh(Mesh mesh, Matrix4f matrix, Material material){
         commands.get(currentRT).add(new DrawMeshCMD(mesh, matrix, material, this));
+    }
+    public void drawFullscreen(Material material){
+        Matrix4f mat4f =  new Matrix4f().identity().scale(new Vector3f(2,2,2));
+        commands.get(currentRT).add(new DrawMeshCMD(Primitive.getQuad(), mat4f, material, this));
     }
 
     public void setRenderContext(RenderContext renderContext) {

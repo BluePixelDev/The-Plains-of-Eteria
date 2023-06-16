@@ -32,6 +32,8 @@ public class PostProcessing {
                 TextureWrapMode.REPEAT,
                 GraphicsFormat.RGB16F
         );
+
+        addEffect(new TestPostProcessEffect());
     }
 
     public void addEffect(PostProcessingEffect effect){

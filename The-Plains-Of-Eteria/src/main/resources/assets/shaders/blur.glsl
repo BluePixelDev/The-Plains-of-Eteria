@@ -2,6 +2,8 @@ uniform float _deltaTime;
 uniform float _unscaledDeltaTime;
 uniform float _timeSinceStart;
 
+uniform mat4 _Transform;
+
 uniform vec2 _tiling = vec2(1);
 uniform vec2 _offset;
 uniform sampler2D _mainTex;
@@ -16,7 +18,7 @@ out vec2 fUV;
 void main(){
     fColor = _color;
     fUV = _uv;
-    gl_Position = vec4(_pos, 1);
+    gl_Position = _Transform * vec4(_pos, 1);
 }
 
 #FRAGMENT

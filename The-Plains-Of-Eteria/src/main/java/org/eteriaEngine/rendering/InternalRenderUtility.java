@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL33.GL_RGB10_A2UI;
 import static org.lwjgl.opengl.GL42.*;
 import static org.lwjgl.opengl.GL44.GL_MIRROR_CLAMP_TO_EDGE;
 
-public final class RenderUtility {
+public final class InternalRenderUtility {
     public static final int POSITION_SIZE = 3;
     public static final int COLOR_SIZE = 4;
     public static final int UV_SIZE = 2;

@@ -1,7 +1,7 @@
 package org.eteriaEngine.rendering.mesh;
 
 import org.eteriaEngine.interfaces.IDisposable;
-import org.eteriaEngine.rendering.RenderUtility;
+import org.eteriaEngine.rendering.InternalRenderUtility;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
@@ -118,7 +118,7 @@ public class Mesh implements IDisposable {
     //---- VERTICES ----
     //Generates new vertex buffer based on Vertices, Colors and UVs.
     private FloatBuffer generateVertexBuffer(){
-        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length * RenderUtility.VERTEX_SIZE);
+        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length * InternalRenderUtility.VERTEX_SIZE);
         for(int i = 0; i < vertices.length ; i++){
             //Position
             vertexBuffer.put(vertices[i].x);
@@ -164,9 +164,9 @@ public class Mesh implements IDisposable {
         glBufferData(GL_ARRAY_BUFFER, vertexBuffer, drawMode);
         allocatedVertexBufferSize = vertexBuffer.capacity();
 
-        GL20.glVertexAttribPointer(0, RenderUtility.POSITION_SIZE, GL_FLOAT, false, RenderUtility.VERTEX_SIZE_BYTES, RenderUtility.POSITION_POINTER);
-        glVertexAttribPointer(1, RenderUtility.COLOR_SIZE, GL_FLOAT, false, RenderUtility.VERTEX_SIZE_BYTES, RenderUtility.COLOR_POINTER);
-        glVertexAttribPointer(2, RenderUtility.UV_SIZE, GL_FLOAT, false, RenderUtility.VERTEX_SIZE_BYTES, RenderUtility.UV_POINTER);
+        GL20.glVertexAttribPointer(0, InternalRenderUtility.POSITION_SIZE, GL_FLOAT, false, InternalRenderUtility.VERTEX_SIZE_BYTES, InternalRenderUtility.POSITION_POINTER);
+        glVertexAttribPointer(1, InternalRenderUtility.COLOR_SIZE, GL_FLOAT, false, InternalRenderUtility.VERTEX_SIZE_BYTES, InternalRenderUtility.COLOR_POINTER);
+        glVertexAttribPointer(2, InternalRenderUtility.UV_SIZE, GL_FLOAT, false, InternalRenderUtility.VERTEX_SIZE_BYTES, InternalRenderUtility.UV_POINTER);
 
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);

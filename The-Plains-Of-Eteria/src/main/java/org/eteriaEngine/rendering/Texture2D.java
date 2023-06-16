@@ -69,11 +69,11 @@ public class Texture2D implements IDisposable {
         glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
-                RenderUtility.GetGraphicsFormat(graphicsFormat),
+                InternalRenderUtility.GetGraphicsFormat(graphicsFormat),
                 width,
                 height,
                 0,
-                RenderUtility.GetInternalFormat(graphicsFormat),
+                InternalRenderUtility.GetInternalFormat(graphicsFormat),
                 GL_UNSIGNED_BYTE,
                 0
         );
@@ -108,12 +108,12 @@ public class Texture2D implements IDisposable {
     private void updateTextureParams(){
         if(markModified){
             //Updating texture wrap
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, RenderUtility.GetWrapMode(wrapMode));
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, RenderUtility.GetWrapMode(wrapMode));
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, InternalRenderUtility.GetWrapMode(wrapMode));
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, InternalRenderUtility.GetWrapMode(wrapMode));
 
             //Updating texture filter
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, RenderUtility.GetFilterMode(filterMode));
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, RenderUtility.GetFilterMode(filterMode));
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, InternalRenderUtility.GetFilterMode(filterMode));
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, InternalRenderUtility.GetFilterMode(filterMode));
 
             glBindTexture(GL_TEXTURE_2D, 0);
             markModified = false;

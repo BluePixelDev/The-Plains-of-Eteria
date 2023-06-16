@@ -12,7 +12,7 @@ public class Main extends EteriaApplication {
     @Override
     public void start() {
         Screen.setScreenResolution(18);
-        Application.setTargetFramerate(75);
+        Application.setTargetFramerate(60);
         Application.setWindowTitle("Title!");
         SceneManager.instance().loadScene(new TestScene());
     }
